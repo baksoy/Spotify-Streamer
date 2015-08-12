@@ -25,6 +25,7 @@ public class TopTracksActivity extends ActionBarActivity {
         setContentView(R.layout.toptracks_list);
         Bundle extras = getIntent().getExtras();
 
+        //****** Artist Data ******
         String artistId = extras.getString("artistId");
         String artistName = extras.getString("artistName");
 
@@ -37,6 +38,7 @@ public class TopTracksActivity extends ActionBarActivity {
         protected void onPostExecute(List<Track> tracks) {
             super.onPostExecute(tracks);
 
+            //****** Track Data ******
             mTopTracks = tracks;
 
             mTopTracksAdapter = new TopTracksAdapter(getApplicationContext(), mTopTracks);

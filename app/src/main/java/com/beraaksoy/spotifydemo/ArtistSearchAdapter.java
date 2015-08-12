@@ -16,13 +16,8 @@ import kaaes.spotify.webapi.android.models.Artist;
 
 public class ArtistSearchAdapter extends ArrayAdapter<Artist> {
 
-//    public ArtistSearchAdapter(ArtistSearchActivity artistSearchActivity, List<Artist> artists) {
-//        super(artistSearchActivity, R.layout.artist_row, artists);
-//    }
-
     public ArtistSearchAdapter(Context context, List<Artist> artists) {
         super(context, R.layout.artist_row, artists);
-
     }
 
     private static class ArtistHolder {

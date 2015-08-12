@@ -105,15 +105,12 @@ public class ArtistSearchActivity extends ActionBarActivity {
             mArtistListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-
                     String artistId = mArtists.get(i).id;
                     String artistName = mArtists.get(i).name;
                     Intent intent = new Intent(getApplicationContext(), TopTracksActivity.class);
                     intent.putExtra("artistId", artistId);
                     intent.putExtra("artistName", artistName);
                     startActivity(intent);
-
                     Toast.makeText(getApplicationContext(), artistName, Toast.LENGTH_SHORT).show();
                 }
             });
