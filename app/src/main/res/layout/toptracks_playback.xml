@@ -26,7 +26,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal|top"
-
             android:text="Ghost Stories"
             android:textSize="16sp" />
     </LinearLayout>
@@ -37,8 +36,10 @@
         android:layout_weight="12">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/previewAlbumImg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
             android:src="@drawable/album_large" />
     </LinearLayout>
 
@@ -67,13 +68,14 @@
         android:orientation="vertical">
 
         <SeekBar
+            android:id="@+id/seekBarPreview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="24dp"
             android:layout_marginRight="24dp" />
     </LinearLayout>
 
-    <LinearLayout
+    <TableRow
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="3"
@@ -82,26 +84,26 @@
 
         <ImageButton
             android:layout_width="wrap_content"
-            android:minWidth="88dp"
             android:layout_height="match_parent"
+            android:minWidth="88dp"
             android:src="@android:drawable/ic_media_previous" />
 
         <ImageButton
+            android:id="@+id/buttonPlayPause"
             android:layout_width="wrap_content"
-            android:minWidth="88dp"
             android:layout_height="match_parent"
-            android:src="@android:drawable/ic_media_play"
             android:layout_marginLeft="24dp"
             android:layout_marginRight="24dp"
-            />
+            android:minWidth="88dp"
+            android:src="@android:drawable/ic_media_play" />
 
         <ImageButton
             android:layout_width="wrap_content"
-            android:minWidth="88dp"
             android:layout_height="match_parent"
+            android:minWidth="88dp"
             android:src="@android:drawable/ic_media_next" />
 
-    </LinearLayout>
+    </TableRow>
 
 
 </LinearLayout>

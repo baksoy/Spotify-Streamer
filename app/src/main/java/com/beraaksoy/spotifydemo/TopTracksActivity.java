@@ -1,9 +1,12 @@
 package com.beraaksoy.spotifydemo;
 
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.List;
@@ -35,22 +38,40 @@ public class TopTracksActivity extends ActionBarActivity {
 
     public class TopTracksTask extends AsyncTask<String, Void, List<Track>> {
         @Override
-        protected void onPostExecute(List<Track> tracks) {
-            super.onPostExecute(tracks);
+        protected void onPostExecute(List<Track> toptracks) {
+            super.onPostExecute(toptracks);
 
             //****** Track Data ******
-            mTopTracks = tracks;
-
+            mTopTracks = toptracks;
             mTopTracksAdapter = new TopTracksAdapter(getApplicationContext(), mTopTracks);
             mTopTracksListView = (ListView) findViewById(R.id.topTracksListView);
             if (mTopTracksListView != null) {
                 mTopTracksListView.setAdapter(mTopTracksAdapter);
             }
 
-            // for (int i = 0; i < tracks.size(); i++) {
-            //    Track track = tracks.get(i);
-            //    Log.i("TRACK_NAME", i+1 + " " + track.name);
+            // for (int i = 0; i < mTopTracks.size(); i++) {
+            //    String playback_url = mTopTracks.get(i).preview_url;
+            //    Track track = mTopTracks.get(i);
+            //    Log.i("TRACK_NAME", i + 1 + " " + track.name);
+            //    Log.i("TRACK_URL", playback_url);
             // }
+
+            mTopTracksListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    String playback_url = mTopTracks.get(i).preview_url;
+                    Intent intent = new Intent(getApplicationContext(), PlaybackActivity.class);
+                    intent.putExtra("playback_url", playback_url);
+                    intent.putExtra("preview_album_img", getAlbumImgUrl(i));
+                    startActivity(intent);
+                }
+            });
+        }
+
+        private String getAlbumImgUrl(int i) {
+            int j = mTopTracks.get(i).album.images.size() - 3;
+            String url = mTopTracks.get(i).album.images.get(j).url;
+            return url;
         }
 
         @Override
