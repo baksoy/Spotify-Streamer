@@ -21,6 +21,8 @@ public class TopTracksActivity extends ActionBarActivity {
     private TopTracksAdapter mTopTracksAdapter;
     private List<Track> mTopTracks;
     private ListView mTopTracksListView;
+    private String mArtistId;
+    private String mArtistName;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -29,11 +31,11 @@ public class TopTracksActivity extends ActionBarActivity {
         Bundle extras = getIntent().getExtras();
 
         //****** Artist Data ******
-        String artistId = extras.getString("artistId");
-        String artistName = extras.getString("artistName");
+        mArtistId = extras.getString("artistId");
+        mArtistName = extras.getString("artistName");
 
         TopTracksTask topTracksTask = new TopTracksTask();
-        topTracksTask.execute(artistId);
+        topTracksTask.execute(mArtistId);
     }
 
     public class TopTracksTask extends AsyncTask<String, Void, List<Track>> {
@@ -60,9 +62,14 @@ public class TopTracksActivity extends ActionBarActivity {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     String playback_url = mTopTracks.get(i).preview_url;
+                    String album_name = mTopTracks.get(i).album.name;
+                    String track_name = mTopTracks.get(i).name;
                     Intent intent = new Intent(getApplicationContext(), PlaybackActivity.class);
                     intent.putExtra("playback_url", playback_url);
                     intent.putExtra("preview_album_img", getAlbumImgUrl(i));
+                    intent.putExtra("artist_name", mArtistName);
+                    intent.putExtra("album_name", album_name);
+                    intent.putExtra("track_name", track_name);
                     startActivity(intent);
                 }
             });

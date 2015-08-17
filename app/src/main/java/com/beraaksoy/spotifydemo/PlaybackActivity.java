@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
@@ -26,6 +27,9 @@ public class PlaybackActivity extends ActionBarActivity implements View.OnTouchL
     private ImageButton mPlaypauseButton;
     private int mMediaFileLengthInMilliseconds;
     private AudioManager audioManager;
+    private String mArtistName;
+    private String mAlbumName;
+    private String mTrackName;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,6 +39,9 @@ public class PlaybackActivity extends ActionBarActivity implements View.OnTouchL
         Bundle extras = getIntent().getExtras();
         mSongPreviewUrl = extras.getString("playback_url");
         mPreviewAlbumImgUrl = extras.getString("preview_album_img");
+        mArtistName = extras.getString("artist_name");
+        mAlbumName = extras.getString("album_name");
+        mTrackName = extras.getString("track_name");
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 
         initView();
@@ -68,6 +75,10 @@ public class PlaybackActivity extends ActionBarActivity implements View.OnTouchL
     private void initView() {
 
         ImageView previewAlbumImg = (ImageView) findViewById(R.id.previewAlbumImg);
+        TextView previewArtistName = (TextView) findViewById(R.id.previewArtistName);
+        TextView previewAlbumName = (TextView) findViewById(R.id.previewAlbumName);
+        TextView previewTrackName = (TextView) findViewById(R.id.previewTrackName);
+
         mPlaypauseButton = (ImageButton) findViewById(R.id.buttonPlayPause);
 
         mSeekBarProgress = (SeekBar) findViewById(R.id.seekBarPreview);
@@ -78,9 +89,15 @@ public class PlaybackActivity extends ActionBarActivity implements View.OnTouchL
         mMediaPlayer.setOnBufferingUpdateListener(this);
         mMediaPlayer.setOnCompletionListener(this);
 
-
         Log.i("PLAYBACK_URL", mPreviewAlbumImgUrl);
 
+
+        //Setting the text on Widgets
+        previewArtistName.setText(mArtistName);
+        previewAlbumName.setText(mAlbumName);
+        previewTrackName.setText(mTrackName);
+
+        //Setting the preview album cover photo
         Picasso.with(getApplicationContext())
                 .load(mPreviewAlbumImgUrl)
                 .resize(640, 640)
