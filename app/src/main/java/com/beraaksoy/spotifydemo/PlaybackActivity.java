@@ -25,6 +25,7 @@ public class PlaybackActivity extends ActionBarActivity implements View.OnTouchL
     private String mPreviewAlbumImgUrl;
     private ImageButton mPlaypauseButton;
     private int mMediaFileLengthInMilliseconds;
+    private AudioManager audioManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -34,7 +35,7 @@ public class PlaybackActivity extends ActionBarActivity implements View.OnTouchL
         Bundle extras = getIntent().getExtras();
         mSongPreviewUrl = extras.getString("playback_url");
         mPreviewAlbumImgUrl = extras.getString("preview_album_img");
-        final AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 
         initView();
 
@@ -49,7 +50,6 @@ public class PlaybackActivity extends ActionBarActivity implements View.OnTouchL
                 }
             }
         });
-
 
         audioManager.requestAudioFocus(new AudioManager.OnAudioFocusChangeListener() {
             @Override
@@ -89,17 +89,8 @@ public class PlaybackActivity extends ActionBarActivity implements View.OnTouchL
     }
 
     /**
-     * Method which updates the SeekBar primary progress by current song playing position
+     * Update SeekBar primary progress by current song playing position
      */
-//    private void seekBarProgressUpdater() {
-//        mSeekBarProgress.setProgress((int) (((float) mMediaPlayer.getCurrentPosition() / mMediaPlayer.getDuration()) * 100)); // This math construction give a percentage of "was playing"/"song length"
-//        Runnable notification = new Runnable() {
-//            public void run() {
-//                seekBarProgressUpdater();
-//            }
-//        };
-//        mHandler.postDelayed(notification, 1000);
-//    }
     private void primarySeekBarProgressUpdater() {
         mMediaFileLengthInMilliseconds = mMediaPlayer.getDuration(); // get the song length in milliseconds from URL
         mSeekBarProgress.setProgress((int) (((float) mMediaPlayer.getCurrentPosition() / mMediaFileLengthInMilliseconds) * 100)); // This math construction give a percentage of "was playing"/"song length"
@@ -125,7 +116,6 @@ public class PlaybackActivity extends ActionBarActivity implements View.OnTouchL
     private void playMedia() {
         mMediaPlayer.start();
         mPlaypauseButton.setImageResource(android.R.drawable.ic_media_pause);
-        //seekBarProgressUpdater();
         primarySeekBarProgressUpdater();
     }
 
