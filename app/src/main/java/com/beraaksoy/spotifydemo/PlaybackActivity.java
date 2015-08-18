@@ -30,6 +30,8 @@ public class PlaybackActivity extends ActionBarActivity implements View.OnTouchL
     private String mArtistName;
     private String mAlbumName;
     private String mTrackName;
+    private TextView mBeginTrackTime;
+    private TextView mEndTrackTime;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,6 +44,7 @@ public class PlaybackActivity extends ActionBarActivity implements View.OnTouchL
         mArtistName = extras.getString("artist_name");
         mAlbumName = extras.getString("album_name");
         mTrackName = extras.getString("track_name");
+
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 
         initView();
@@ -85,6 +88,10 @@ public class PlaybackActivity extends ActionBarActivity implements View.OnTouchL
         mSeekBarProgress.setMax(99); // It means 100% .0-99
         mSeekBarProgress.setOnTouchListener(this);
 
+        mBeginTrackTime = (TextView) findViewById(R.id.beginTrackTime);
+        mEndTrackTime = (TextView) findViewById(R.id.endTrackTime);
+
+
         mMediaPlayer = new MediaPlayer();
         mMediaPlayer.setOnBufferingUpdateListener(this);
         mMediaPlayer.setOnCompletionListener(this);
@@ -96,6 +103,7 @@ public class PlaybackActivity extends ActionBarActivity implements View.OnTouchL
         previewArtistName.setText(mArtistName);
         previewAlbumName.setText(mAlbumName);
         previewTrackName.setText(mTrackName);
+
 
         //Setting the preview album cover photo
         Picasso.with(getApplicationContext())
@@ -111,7 +119,6 @@ public class PlaybackActivity extends ActionBarActivity implements View.OnTouchL
     private void primarySeekBarProgressUpdater() {
         mMediaFileLengthInMilliseconds = mMediaPlayer.getDuration(); // get the song length in milliseconds from URL
         mSeekBarProgress.setProgress((int) (((float) mMediaPlayer.getCurrentPosition() / mMediaFileLengthInMilliseconds) * 100)); // This math construction give a percentage of "was playing"/"song length"
-
         if (mMediaPlayer.isPlaying() || mMediaPlayer.getCurrentPosition() < mMediaFileLengthInMilliseconds - 1000) {
             Runnable notification = new Runnable() {
                 public void run() {

@@ -97,36 +97,42 @@ public class ArtistSearchActivity extends ActionBarActivity {
                 mArtistListView.setAdapter(mArtistSearchAdapter);
             }
 
-            // for (int i = 0; i < artists.size(); i++) {
-            //     Artist artist = artists.get(i);
-            //     Log.i("ARTIST", i + " " + artist.name);
-            // }
 
-            mArtistListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    String artistId = mArtists.get(i).id;
-                    String artistName = mArtists.get(i).name;
-                    Intent intent = new Intent(getApplicationContext(), TopTracksActivity.class);
-                    intent.putExtra("artistId", artistId);
-                    intent.putExtra("artistName", artistName);
-                    startActivity(intent);
-                    Toast.makeText(getApplicationContext(), artistName, Toast.LENGTH_SHORT).show();
-                }
-            });
+
+        // for (int i = 0; i < artists.size(); i++) {
+        //     Artist artist = artists.get(i);
+        //     Log.i("ARTIST", i + " " + artist.name);
+        // }
+
+        mArtistListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+
+        {
+            @Override
+            public void onItemClick (AdapterView < ? > adapterView, View view,int i, long l){
+            String artistId = mArtists.get(i).id;
+            String artistName = mArtists.get(i).name;
+            Intent intent = new Intent(getApplicationContext(), TopTracksActivity.class);
+            intent.putExtra("artistId", artistId);
+            intent.putExtra("artistName", artistName);
+            startActivity(intent);
+            Toast.makeText(getApplicationContext(), artistName, Toast.LENGTH_SHORT).show();
+        }
         }
 
-        @Override
-        protected List<Artist> doInBackground(String... params) {
-            SpotifyApi api = new SpotifyApi();
-            SpotifyService service = api.getService();
-
-            ArtistsPager artistResults = service.searchArtists(params[0]);
-            List<Artist> artists = artistResults.artists.items;
-
-            return artists;
-        }
+        );
     }
+
+    @Override
+    protected List<Artist> doInBackground(String... params) {
+        SpotifyApi api = new SpotifyApi();
+        SpotifyService service = api.getService();
+
+        ArtistsPager artistResults = service.searchArtists(params[0]);
+        List<Artist> artists = artistResults.artists.items;
+
+        return artists;
+    }
+}
 
 }
 
