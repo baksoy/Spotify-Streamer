@@ -13,7 +13,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -78,14 +77,32 @@ public class PlaybackActivity extends ActionBarActivity implements View.OnTouchL
         mPlayPrevButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "Play Previous", Toast.LENGTH_SHORT).show();
+                mMediaPlayer.stop();
+                if (mTrackPosition > 0) {
+                    mTrackPosition = mTrackPosition - 1;
+                } else {
+                    mTrackPosition = mTopTracks.size() - 1;
+                }
+                mMediaPlayer.start();
+                setupMedia();
+                initView();
+                playMedia();
             }
         });
 
         mPlayNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "Play Next", Toast.LENGTH_SHORT).show();
+                mMediaPlayer.stop();
+                if (mTrackPosition < mTopTracks.size() - 1) {
+                    mTrackPosition = mTrackPosition + 1;
+                } else {
+                    mTrackPosition = 0;
+                }
+                mMediaPlayer.start();
+                setupMedia();
+                initView();
+                playMedia();
             }
         });
 
@@ -154,13 +171,13 @@ public class PlaybackActivity extends ActionBarActivity implements View.OnTouchL
     }
 
     private void pauseMedia() {
-        mMediaPlayer.pause();
         mPlayPauseButton.setImageResource(android.R.drawable.ic_media_play);
+        mMediaPlayer.pause();
     }
 
     private void playMedia() {
-        mMediaPlayer.start();
         mPlayPauseButton.setImageResource(android.R.drawable.ic_media_pause);
+        mMediaPlayer.start();
         primarySeekBarProgressUpdater();
     }
 
@@ -204,7 +221,11 @@ public class PlaybackActivity extends ActionBarActivity implements View.OnTouchL
     @Override
     public void onCompletion(MediaPlayer mp) {
         /** MediaPlayer onCompletion event handler. Method which calls when song playing is complete*/
-        mPlayPauseButton.setImageResource(android.R.drawable.ic_media_play);
+        if (mMediaPlayer.isPlaying()) {
+            mPlayPauseButton.setImageResource(android.R.drawable.ic_media_pause);
+        } else {
+            mPlayPauseButton.setImageResource(android.R.drawable.ic_media_play);
+        }
     }
 
     @Override
@@ -215,5 +236,7 @@ public class PlaybackActivity extends ActionBarActivity implements View.OnTouchL
 
     @Override
     public void onPrepared(MediaPlayer mediaPlayer) {
+        mPlayPauseButton.setImageResource(android.R.drawable.ic_media_pause);
     }
+
 }
