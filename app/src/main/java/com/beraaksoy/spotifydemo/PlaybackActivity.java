@@ -24,9 +24,7 @@ public class PlaybackActivity extends ActionBarActivity implements View.OnTouchL
     private SeekBar mSeekBarProgress;
     private MediaPlayer mMediaPlayer;
     private final Handler mHandler = new Handler();
-    private String mPrevSongUrl;
     private String mCurrentSongUrl;
-    private String mNextSongUrl;
     private String mPreviewAlbumImgUrl;
     private ImageButton mPlayPrevButton;
     private ImageButton mPlayPauseButton;
@@ -132,6 +130,7 @@ public class PlaybackActivity extends ActionBarActivity implements View.OnTouchL
         TextView beginTrackTime = (TextView) findViewById(R.id.beginTrackTime);
         TextView endTrackTime = (TextView) findViewById(R.id.endTrackTime);
 
+
         mPlayPrevButton = (ImageButton) findViewById(R.id.buttonPlayPrev);
         mPlayPauseButton = (ImageButton) findViewById(R.id.buttonPlayPause);
         mPlayNextButton = (ImageButton) findViewById(R.id.buttonPlayNext);
@@ -145,6 +144,8 @@ public class PlaybackActivity extends ActionBarActivity implements View.OnTouchL
         previewArtistName.setText(mArtistName);
         previewAlbumName.setText(mAlbumName);
         previewTrackName.setText(mTrackName);
+        beginTrackTime.setText("0:00");
+        endTrackTime.setText(String.valueOf(timeConversion(mMediaPlayer.getDuration() / 1000)));
 
         //Setting the preview album cover photo
         Picasso.with(getApplicationContext())
@@ -240,4 +241,10 @@ public class PlaybackActivity extends ActionBarActivity implements View.OnTouchL
         mPlayPauseButton.setImageResource(android.R.drawable.ic_media_pause);
     }
 
+    private static String timeConversion(int totalSeconds) {
+        int seconds = totalSeconds % 60;
+        int totalMinutes = totalSeconds / 60;
+        int minutes = totalMinutes % 60;
+        return minutes + ":" + seconds;
+    }
 }
