@@ -57,6 +57,7 @@ public class PlaybackActivity extends ActionBarActivity implements View.OnTouchL
         //Set up and initialize activity
         setupMedia();
         initView();
+        playMedia();
 
         for (int i = 0; i < mTopTracks.size(); i++) {
             Track track = mTopTracks.get(i);
