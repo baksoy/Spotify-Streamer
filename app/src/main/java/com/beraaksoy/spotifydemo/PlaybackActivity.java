@@ -36,6 +36,9 @@ public class PlaybackActivity extends ActionBarActivity implements View.OnTouchL
     private String mTrackName;
     private List<Track> mTopTracks;
     private int mTrackPosition;
+    private TextView mBeginTrackTime;
+    private TextView mEndTrackTime;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -127,8 +130,8 @@ public class PlaybackActivity extends ActionBarActivity implements View.OnTouchL
         TextView previewArtistName = (TextView) findViewById(R.id.previewArtistName);
         TextView previewAlbumName = (TextView) findViewById(R.id.previewAlbumName);
         TextView previewTrackName = (TextView) findViewById(R.id.previewTrackName);
-        TextView beginTrackTime = (TextView) findViewById(R.id.beginTrackTime);
-        TextView endTrackTime = (TextView) findViewById(R.id.endTrackTime);
+        mBeginTrackTime = (TextView) findViewById(R.id.beginTrackTime);
+        mEndTrackTime = (TextView) findViewById(R.id.endTrackTime);
 
 
         mPlayPrevButton = (ImageButton) findViewById(R.id.buttonPlayPrev);
@@ -144,8 +147,7 @@ public class PlaybackActivity extends ActionBarActivity implements View.OnTouchL
         previewArtistName.setText(mArtistName);
         previewAlbumName.setText(mAlbumName);
         previewTrackName.setText(mTrackName);
-        beginTrackTime.setText("0:00");
-        endTrackTime.setText(String.valueOf(timeConversion(mMediaPlayer.getDuration() / 1000)));
+        mEndTrackTime.setText(String.valueOf(timeConversion(mMediaPlayer.getDuration() / 1000)));
 
         //Setting the preview album cover photo
         Picasso.with(getApplicationContext())
@@ -159,16 +161,20 @@ public class PlaybackActivity extends ActionBarActivity implements View.OnTouchL
     private void primarySeekBarProgressUpdater() {
         mMediaFileLengthInMilliseconds = mMediaPlayer.getDuration(); // get the song length in milliseconds from URL
         mSeekBarProgress.setProgress((int) (((float) mMediaPlayer.getCurrentPosition() / mMediaFileLengthInMilliseconds) * 100)); // This math construction give a percentage of "was playing"/"song length"
-        if (mMediaPlayer.isPlaying() || mMediaPlayer.getCurrentPosition() < mMediaFileLengthInMilliseconds - 1000) {
+        if (mMediaPlayer.isPlaying() || mMediaPlayer.getCurrentPosition() < mMediaFileLengthInMilliseconds - 500) {
             Runnable notification = new Runnable() {
                 public void run() {
                     primarySeekBarProgressUpdater();
+                    if (mMediaPlayer.getCurrentPosition() < mMediaFileLengthInMilliseconds - 500) {
+                        mBeginTrackTime.setText(String.valueOf(timeConversion(mMediaPlayer.getCurrentPosition() / 1000)));
+                    }
                 }
             };
             mHandler.postDelayed(notification, 1000);
         } else {
             //Reset seekbar to the beginning
             mSeekBarProgress.setProgress(0);
+            mBeginTrackTime.setText(R.string.begin_track_time);
         }
     }
 
@@ -243,8 +249,7 @@ public class PlaybackActivity extends ActionBarActivity implements View.OnTouchL
 
     private static String timeConversion(int totalSeconds) {
         int seconds = totalSeconds % 60;
-        int totalMinutes = totalSeconds / 60;
-        int minutes = totalMinutes % 60;
+        int minutes = totalSeconds / 60;
         return minutes + ":" + seconds;
     }
 }
