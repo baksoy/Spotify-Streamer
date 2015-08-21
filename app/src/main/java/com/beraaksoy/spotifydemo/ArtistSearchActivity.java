@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,6 +28,9 @@ public class ArtistSearchActivity extends ActionBarActivity {
     private ListView mArtistListView;
     private String mArtistSearchString;
     private EditText mArtistSearchInput;
+
+
+    private static final int SHORT_DELAY = 1000; // 2 seconds
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,15 +101,11 @@ public class ArtistSearchActivity extends ActionBarActivity {
             }
 
             //If artist search returns nothing, ask user to refine search
-            //if (artists.size() == 0 ) {
-            //    Toast.makeText(getApplicationContext(), R.string.artist_not_found_message, Toast.LENGTH_SHORT).show();
-            //}
+            if (artists.size() == 0 && mArtistSearchInput.getText().toString().length() > 0) {
+                Toast.makeText(getApplicationContext(), R.string.artist_not_found_message, Toast.LENGTH_SHORT).show();
+            }
 
             mArtists = artists;
-            //  Log.i("ARTIST_SEARCH_STRING", mArtistSearchString + " ");
-            //Log.i("ARTIST_SEARCH_STRING", String.valueOf(mArtistSearchString.length()));
-            Log.i("ARTIST_SEARCH_STRING", String.valueOf(mArtistSearchInput.getText().toString()));
-
 
             mArtistSearchAdapter = new ArtistSearchAdapter(getApplicationContext(), mArtists);
             mArtistListView = (ListView) findViewById(R.id.artistsListView);
@@ -138,16 +136,23 @@ public class ArtistSearchActivity extends ActionBarActivity {
 
         @Override
         protected List<Artist> doInBackground(String... params) {
-            SpotifyApi api = new SpotifyApi();
-            SpotifyService service = api.getService();
+            String queryString = params[0];
 
-            ArtistsPager artistResults = service.searchArtists(params[0]);
-            List<Artist> artists = artistResults.artists.items;
+            //Changing the search into a like-type search
+            queryString = "*" + queryString + "*";
 
-            return artists;
+            try {
+                SpotifyApi api = new SpotifyApi();
+                SpotifyService service = api.getService();
+                ArtistsPager artistResults = service.searchArtists(queryString);
+                List<Artist> artists = artistResults.artists.items;
+                return artists;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
         }
     }
-
 }
 
 
