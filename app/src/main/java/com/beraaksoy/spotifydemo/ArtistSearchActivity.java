@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,6 +27,7 @@ public class ArtistSearchActivity extends ActionBarActivity {
     private ArtistSearchAdapter mArtistSearchAdapter;
     public List<Artist> mArtists;
     private ListView mArtistListView;
+    private String mArtistSearchString;
     private EditText mArtistSearchInput;
 
     @Override
@@ -43,11 +45,11 @@ public class ArtistSearchActivity extends ActionBarActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                String searchString = charSequence.toString();
+                mArtistSearchString = charSequence.toString();
 
-                if (!searchString.isEmpty()) {
+                if (!mArtistSearchString.isEmpty()) {
                     ArtistSearchTask artistTopTrackTast = new ArtistSearchTask();
-                    artistTopTrackTast.execute(searchString);
+                    artistTopTrackTast.execute(mArtistSearchString);
                 } else {
                     //If search bar is empty
                     mArtistSearchAdapter.clear();
@@ -59,6 +61,7 @@ public class ArtistSearchActivity extends ActionBarActivity {
 
             }
         });
+
 
     }
 
@@ -89,7 +92,22 @@ public class ArtistSearchActivity extends ActionBarActivity {
         protected void onPostExecute(List<Artist> artists) {
             super.onPostExecute(artists);
 
+            //Network error feedback if artist list is null
+            if (artists == null) {
+                Toast.makeText(getApplicationContext(), R.string.network_error_message, Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            //If artist search returns nothing, ask user to refine search
+            //if (artists.size() == 0 ) {
+            //    Toast.makeText(getApplicationContext(), R.string.artist_not_found_message, Toast.LENGTH_SHORT).show();
+            //}
+
             mArtists = artists;
+            //  Log.i("ARTIST_SEARCH_STRING", mArtistSearchString + " ");
+            //Log.i("ARTIST_SEARCH_STRING", String.valueOf(mArtistSearchString.length()));
+            Log.i("ARTIST_SEARCH_STRING", String.valueOf(mArtistSearchInput.getText().toString()));
+
 
             mArtistSearchAdapter = new ArtistSearchAdapter(getApplicationContext(), mArtists);
             mArtistListView = (ListView) findViewById(R.id.artistsListView);
@@ -97,42 +115,38 @@ public class ArtistSearchActivity extends ActionBarActivity {
                 mArtistListView.setAdapter(mArtistSearchAdapter);
             }
 
+            // for (int i = 0; i < artists.size(); i++) {
+            //     Artist artist = artists.get(i);
+            //     Log.i("ARTIST", i + " " + artist.name);
+            // }
 
+            mArtistListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                                       @Override
+                                                       public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                                           String artistId = mArtists.get(i).id;
+                                                           String artistName = mArtists.get(i).name;
+                                                           Intent intent = new Intent(getApplicationContext(), TopTracksActivity.class);
+                                                           intent.putExtra("artistId", artistId);
+                                                           intent.putExtra("artistName", artistName);
+                                                           startActivity(intent);
+                                                           Toast.makeText(getApplicationContext(), artistName, Toast.LENGTH_SHORT).show();
+                                                       }
+                                                   }
 
-        // for (int i = 0; i < artists.size(); i++) {
-        //     Artist artist = artists.get(i);
-        //     Log.i("ARTIST", i + " " + artist.name);
-        // }
-
-        mArtistListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-
-        {
-            @Override
-            public void onItemClick (AdapterView < ? > adapterView, View view,int i, long l){
-            String artistId = mArtists.get(i).id;
-            String artistName = mArtists.get(i).name;
-            Intent intent = new Intent(getApplicationContext(), TopTracksActivity.class);
-            intent.putExtra("artistId", artistId);
-            intent.putExtra("artistName", artistName);
-            startActivity(intent);
-            Toast.makeText(getApplicationContext(), artistName, Toast.LENGTH_SHORT).show();
+            );
         }
+
+        @Override
+        protected List<Artist> doInBackground(String... params) {
+            SpotifyApi api = new SpotifyApi();
+            SpotifyService service = api.getService();
+
+            ArtistsPager artistResults = service.searchArtists(params[0]);
+            List<Artist> artists = artistResults.artists.items;
+
+            return artists;
         }
-
-        );
     }
-
-    @Override
-    protected List<Artist> doInBackground(String... params) {
-        SpotifyApi api = new SpotifyApi();
-        SpotifyService service = api.getService();
-
-        ArtistsPager artistResults = service.searchArtists(params[0]);
-        List<Artist> artists = artistResults.artists.items;
-
-        return artists;
-    }
-}
 
 }
 

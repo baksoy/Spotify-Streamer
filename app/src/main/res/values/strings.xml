@@ -10,5 +10,7 @@
     <string name="toptentracks_label">Top 10 Tracks</string>
     <string name="begin_track_time">00:00</string>
     <string name="end_track_time">00:30</string>
+    <string name="network_error_message">Error retrieving data. Please check your network status and try again.</string>
+    <string name="artist_not_found_message">Artist not found. Please try another search.</string>
     <color name="actionbar_background">#FFBAB6A5</color>
 </resources>
