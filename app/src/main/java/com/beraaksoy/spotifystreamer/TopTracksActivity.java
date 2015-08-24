@@ -1,11 +1,11 @@
 package com.beraaksoy.spotifystreamer;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -18,7 +18,7 @@ import kaaes.spotify.webapi.android.SpotifyService;
 import kaaes.spotify.webapi.android.models.Track;
 import kaaes.spotify.webapi.android.models.Tracks;
 
-public class TopTracksActivity extends ActionBarActivity {
+public class TopTracksActivity extends Activity {
 
     private TopTracksAdapter mTopTracksAdapter;
     private List<Track> mTopTracks;

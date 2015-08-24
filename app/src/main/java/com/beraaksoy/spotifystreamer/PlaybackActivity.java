@@ -1,11 +1,11 @@
 package com.beraaksoy.spotifystreamer;
 
+import android.app.Activity;
 import android.content.Context;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,7 +20,8 @@ import java.util.List;
 
 import kaaes.spotify.webapi.android.models.Track;
 
-public class PlaybackActivity extends ActionBarActivity implements View.OnTouchListener, MediaPlayer.OnCompletionListener, MediaPlayer.OnBufferingUpdateListener, MediaPlayer.OnPreparedListener {
+public class PlaybackActivity extends Activity implements View.OnTouchListener, MediaPlayer.OnCompletionListener, MediaPlayer.OnBufferingUpdateListener, MediaPlayer.OnPreparedListener {
+
     private SeekBar mSeekBarProgress;
     private MediaPlayer mMediaPlayer;
     private final Handler mHandler = new Handler();

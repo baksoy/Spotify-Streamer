@@ -1,9 +1,9 @@
 package com.beraaksoy.spotifystreamer;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
@@ -21,7 +21,7 @@ import kaaes.spotify.webapi.android.SpotifyService;
 import kaaes.spotify.webapi.android.models.Artist;
 import kaaes.spotify.webapi.android.models.ArtistsPager;
 
-public class ArtistSearchActivity extends ActionBarActivity {
+public class ArtistSearchActivity extends Activity {
 
     private ArtistSearchAdapter mArtistSearchAdapter;
     public List<Artist> mArtists;
