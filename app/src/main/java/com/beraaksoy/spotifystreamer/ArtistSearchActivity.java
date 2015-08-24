@@ -1,4 +1,4 @@
-package com.beraaksoy.spotifydemo;
+package com.beraaksoy.spotifystreamer;
 
 import android.content.Intent;
 import android.os.AsyncTask;
