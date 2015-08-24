@@ -53,12 +53,12 @@ public class TopTracksActivity extends Activity {
                 mTopTracksListView.setAdapter(mTopTracksAdapter);
             }
 
-            // for (int i = 0; i < mTopTracks.size(); i++) {
-            //    String playback_url = mTopTracks.get(i).preview_url;
-            //    Track track = mTopTracks.get(i);
-            //    Log.i("TRACK_NAME", i + 1 + " " + track.name);
-            //    Log.i("TRACK_URL", playback_url);
-            // }
+//             for (int i = 0; i < mTopTracks.size(); i++) {
+//                String playback_url = mTopTracks.get(i).preview_url;
+//                Track track = mTopTracks.get(i);
+//                Log.i("TRACK_NAME", i + 1 + " " + track.name);
+//                Log.i("TRACK_URL_TTACTIVITY", playback_url);
+//             }
 
             mTopTracksListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -67,24 +67,16 @@ public class TopTracksActivity extends Activity {
                     Intent intent = new Intent(getApplicationContext(), PlaybackActivity.class);
                     intent.putParcelableArrayListExtra("topTracks", (ArrayList<? extends Parcelable>) topTracks);
                     intent.putExtra("track_position", i);
-                    //String playback_url = mTopTracks.get(i).preview_url;
-                    //String album_name = mTopTracks.get(i).album.name;
-                    //String track_name = mTopTracks.get(i).name;
-                    //intent.putExtra("playback_url", playback_url);
-                    //intent.putExtra("preview_album_img", getAlbumImgUrl(i));
-                    //intent.putExtra("artist_name", mArtistName);
-                    //intent.putExtra("album_name", album_name);
-                    //intent.putExtra("track_name", track_name);
                     startActivity(intent);
                 }
             });
         }
 
-        private String getAlbumImgUrl(int i) {
-            int j = mTopTracks.get(i).album.images.size() - 3;
-            String url = mTopTracks.get(i).album.images.get(j).url;
-            return url;
-        }
+//        private String getAlbumImgUrl(int i) {
+//            int j = mTopTracks.get(i).album.images.size() - 3;
+//            String url = mTopTracks.get(i).album.images.get(j).url;
+//            return url;
+//        }
 
         @Override
         protected List<Track> doInBackground(String... artistId) {
