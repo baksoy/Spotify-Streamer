@@ -29,7 +29,7 @@ public class TopTracksActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.toptracks_list);
+        setContentView(R.layout.toptracks_activity);
         Bundle extras = getIntent().getExtras();
 
         //****** Artist Data ******
