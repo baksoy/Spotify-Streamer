@@ -59,7 +59,6 @@ public class PlaybackFragment extends DialogFragment implements View.OnTouchList
         Bundle extras = getArguments();
         mTopTracks = extras.getParcelableArrayList("topTracks");
         mTrackPosition = extras.getInt("track_position");
-
         //Log.i("TRACK_URL_ONCREATE", mTopTracks.get(mTrackPosition).preview_url);
     }
 

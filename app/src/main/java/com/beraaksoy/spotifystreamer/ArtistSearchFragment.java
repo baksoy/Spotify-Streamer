@@ -1,7 +1,6 @@
 package com.beraaksoy.spotifystreamer;
 
 import android.app.Fragment;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
@@ -28,6 +27,7 @@ public class ArtistSearchFragment extends Fragment {
     private ListView mArtistListView;
     private String mArtistSearchString;
     private EditText mArtistSearchInput;
+    private Communicator communicator;
 
     public ArtistSearchFragment() {
     }
@@ -41,6 +41,8 @@ public class ArtistSearchFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        communicator = (Communicator) getActivity();
+
         mArtistSearchInput = (EditText) getActivity().findViewById(R.id.artistSearchInput);
         mArtistSearchInput.addTextChangedListener(new TextWatcher() {
             @Override
@@ -93,20 +95,12 @@ public class ArtistSearchFragment extends Fragment {
                 mArtistListView.setAdapter(mArtistSearchAdapter);
             }
 
-            // for (int i = 0; i < artists.size(); i++) {
-            //     Artist artist = artists.get(i);
-            //     Log.i("ARTIST", i + " " + artist.name);
-            // }
-
             mArtistListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                                        @Override
                                                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                                                            String artistId = mArtists.get(i).id;
                                                            String artistName = mArtists.get(i).name;
-                                                           Intent intent = new Intent(getActivity().getApplicationContext(), TopTracksActivity.class);
-                                                           intent.putExtra("artistId", artistId);
-                                                           intent.putExtra("artistName", artistName);
-                                                           startActivity(intent);
+                                                           communicator.respond(artistId, artistName);
                                                            Toast.makeText(getActivity().getApplicationContext(), artistName, Toast.LENGTH_SHORT).show();
                                                        }
                                                    }
@@ -132,6 +126,14 @@ public class ArtistSearchFragment extends Fragment {
                 return null;
             }
         }
+    }
+
+    public void setCommunicator(Communicator communicator) {
+        this.communicator = communicator;
+    }
+
+    public interface Communicator {
+        public void respond(String artistId, String artistName);
     }
 
 }

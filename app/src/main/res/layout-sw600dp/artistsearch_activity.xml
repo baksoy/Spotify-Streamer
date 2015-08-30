@@ -3,24 +3,27 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:weightSum="20"
+    android:orientation="horizontal"
+    android:weightSum="5"
     tools:context=".MainActivity">
 
 
-    <EditText
-        android:id="@+id/artistSearchInput"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+    <fragment
+        android:id="@+id/fragment1"
+        android:name="com.beraaksoy.spotifystreamer.ArtistSearchFragment"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="2"
+        tools:layout="@layout/artistsearch_fragment" />
+
+    <fragment
+        android:id="@+id/fragment2"
+        android:name="com.beraaksoy.spotifystreamer.TopTracksFragment"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
         android:layout_weight="3"
-        android:hint="@string/artist_search_hint" />
+        tools:layout="@layout/toptracks_fragment" />
 
-    <ListView
-        android:id="@+id/artistsListView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="17">
-
-    </ListView>
 
 </LinearLayout>
