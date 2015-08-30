@@ -1,6 +1,5 @@
 package com.beraaksoy.spotifystreamer;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -20,8 +19,6 @@ public class PlaybackActivity extends Activity {
         if (savedInstanceState == null) {
             showDialog();
         }
-        ActionBar actionBar = getActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
     public void showDialog() {
