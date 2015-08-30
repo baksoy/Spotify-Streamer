@@ -1,7 +1,6 @@
 package com.beraaksoy.spotifystreamer;
 
 
-import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.media.AudioManager;
@@ -12,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -157,14 +155,15 @@ public class PlaybackFragment extends DialogFragment implements View.OnTouchList
 //            Track track = mTopTracks.get(i);
 //            Log.i("TRACK_NAME", i + ": " + track.name);
 //        }
+
     }
 
-    @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        Dialog dialog = super.onCreateDialog(savedInstanceState);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        return dialog;
-    }
+//    @Override
+//    public Dialog onCreateDialog(Bundle savedInstanceState) {
+//        Dialog dialog = super.onCreateDialog(savedInstanceState);
+//        Ddialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        return dialog;
+//    }
 
     //Fetch album cover image
     private String getAlbumImgUrl() {

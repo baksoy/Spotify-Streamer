@@ -35,7 +35,7 @@ public class PlaybackActivity extends Activity {
         } else {
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-            transaction.replace(R.id.playback_fragment, fragment).addToBackStack(null).commit();
+            transaction.replace(R.id.playback_fragment, fragment).commit();
         }
     }
 }
