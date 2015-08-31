@@ -7,6 +7,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -57,9 +58,7 @@ public class PlaybackFragment extends DialogFragment implements View.OnTouchList
         Bundle extras = getArguments();
         mTopTracks = extras.getParcelableArrayList("topTracks");
         mTrackPosition = extras.getInt("track_position");
-        //Log.i("TRACK_URL_ONCREATE", mTopTracks.get(mTrackPosition).preview_url);
-
-
+        // Log.i("TRACK_URL_ONCREATE", mTopTracks.get(mTrackPosition).preview_url);
     }
 
     @Override
@@ -72,6 +71,7 @@ public class PlaybackFragment extends DialogFragment implements View.OnTouchList
         mMediaPlayer = new MediaPlayer();
         mMediaPlayer.setOnBufferingUpdateListener(this);
         mMediaPlayer.setOnCompletionListener(this);
+        mMediaPlayer.setOnPreparedListener(this);
 
         //mCurrentSongUrl = extras.getString("playback_url");
         mCurrentSongUrl = mTopTracks.get(mTrackPosition).preview_url;
@@ -157,6 +157,9 @@ public class PlaybackFragment extends DialogFragment implements View.OnTouchList
 //        for (int i = 0; i < mTopTracks.size(); i++) {
 //            Track track = mTopTracks.get(i);
 //            Log.i("TRACK_NAME", i + ": " + track.name);
+//            Log.i("TRACK_URL", i + ": " + track.preview_url);
+//            Log.i("TRACK_URI", i + ": " + track.uri);
+//            Log.i("TRACK_DURATION", i + ": " + track.duration_ms);
 //        }
 
     }
@@ -196,7 +199,6 @@ public class PlaybackFragment extends DialogFragment implements View.OnTouchList
         previewArtistName.setText(mArtistName);
         previewAlbumName.setText(mAlbumName);
         previewTrackName.setText(mTrackName);
-        mEndTrackTime.setText(String.valueOf(timeConversion(mMediaPlayer.getDuration() / 1000)));
 
         //Setting the preview album cover photo
         Picasso.with(getActivity().getApplicationContext())
@@ -233,9 +235,13 @@ public class PlaybackFragment extends DialogFragment implements View.OnTouchList
     }
 
     private void playMedia() {
-        mPlayPauseButton.setImageResource(android.R.drawable.ic_media_pause);
-        mMediaPlayer.start();
-        primarySeekBarProgressUpdater();
+        mMediaPlayer.reset();
+        try {
+            mMediaPlayer.setDataSource(mCurrentSongUrl); // setup song to mediaplayer data source
+        } catch (Exception e) {
+            Log.e("SET PLAYBACK DATA:", "Error setting data source", e);
+        }
+        mMediaPlayer.prepareAsync();
     }
 
     //Set up the media to be played
@@ -256,12 +262,6 @@ public class PlaybackFragment extends DialogFragment implements View.OnTouchList
         //mTrackName = extras.getString("track_name");
         mTrackName = mTopTracks.get(mTrackPosition).name;
 
-        try {
-            mMediaPlayer.setDataSource(mCurrentSongUrl); // setup song to mediaplayer data source
-            mMediaPlayer.prepare(); // you must call this method after setup the datasource in setDataSource method. After calling prepare() the instance of MediaPlayer starts load data from URL to internal buffer.
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -296,6 +296,8 @@ public class PlaybackFragment extends DialogFragment implements View.OnTouchList
     @Override
     public void onPrepared(MediaPlayer mediaPlayer) {
         mPlayPauseButton.setImageResource(android.R.drawable.ic_media_pause);
+        mMediaPlayer.start();
+        primarySeekBarProgressUpdater();
     }
 
     private static String timeConversion(int totalSeconds) {
@@ -303,5 +305,4 @@ public class PlaybackFragment extends DialogFragment implements View.OnTouchList
         int minutes = totalSeconds / 60;
         return minutes + ":" + seconds;
     }
-
 }
