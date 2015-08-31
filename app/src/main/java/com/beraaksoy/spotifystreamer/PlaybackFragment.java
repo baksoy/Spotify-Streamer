@@ -58,12 +58,15 @@ public class PlaybackFragment extends DialogFragment implements View.OnTouchList
         mTopTracks = extras.getParcelableArrayList("topTracks");
         mTrackPosition = extras.getInt("track_position");
         //Log.i("TRACK_URL_ONCREATE", mTopTracks.get(mTrackPosition).preview_url);
+
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.toptracks_playback_fragment, container, false);
+
 
         audioManager = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
         mMediaPlayer = new MediaPlayer();
