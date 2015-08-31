@@ -25,10 +25,10 @@
 
         </activity>
         <activity
-            android:theme="@android:style/Theme.Holo.DialogWhenLarge"
-            android:configChanges="orientation|screenSize"
             android:name="com.beraaksoy.spotifystreamer.PlaybackActivity"
-            android:label="@string/app_name">
+            android:configChanges="orientation|screenSize"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Holo.DialogWhenLarge">
 
         </activity>
 

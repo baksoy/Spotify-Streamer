@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +54,10 @@ public class TopTracksFragment extends Fragment {
         protected void onPostExecute(List<Track> toptracks) {
             super.onPostExecute(toptracks);
 
+            if ((toptracks == null) || (toptracks.size() == 0)) {
+                Toast.makeText(getActivity().getApplicationContext(), R.string.toptracks_not_found_message, Toast.LENGTH_SHORT).show();
+            }
+
             //****** Track Data ******
             mTopTracks = toptracks;
             mTopTracksAdapter = new TopTracksAdapter(getActivity().getApplicationContext(), mTopTracks);
@@ -65,9 +70,11 @@ public class TopTracksFragment extends Fragment {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     List<Track> topTracks = mTopTracks;
+
                     Intent intent = new Intent(getActivity().getApplicationContext(), PlaybackActivity.class);
                     intent.putParcelableArrayListExtra("topTracks", (ArrayList<? extends Parcelable>) topTracks);
                     intent.putExtra("track_position", i);
+
                     startActivity(intent);
                 }
             });

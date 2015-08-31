@@ -59,8 +59,10 @@ public class ArtistSearchFragment extends Fragment {
                     ArtistSearchTask artistTopTrackTast = new ArtistSearchTask();
                     artistTopTrackTast.execute(mArtistSearchString);
                 } else {
-                    //If search bar is empty
-                    mArtistSearchAdapter.clear();
+                    //If search bar is empty and adapter is not null
+                    if (mArtistSearchAdapter != null) {
+                        mArtistSearchAdapter.clear();
+                    }
                 }
             }
 
@@ -71,7 +73,9 @@ public class ArtistSearchFragment extends Fragment {
         });
     }
 
+
     public class ArtistSearchTask extends AsyncTask<String, Void, List<Artist>> {
+
         @Override
         protected void onPostExecute(List<Artist> artists) {
             super.onPostExecute(artists);

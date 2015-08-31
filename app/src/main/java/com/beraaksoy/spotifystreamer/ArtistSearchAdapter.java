@@ -47,7 +47,7 @@ public class ArtistSearchAdapter extends ArrayAdapter<Artist> {
 
             row.setTag(holder);
         } else {
-            //Otherwise you the existing view
+            //Otherwise use the existing view
             holder = (ArtistHolder) row.getTag();
         }
 
